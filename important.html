@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valentine 💖</title>
+
+<style>
+* {
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(135deg, #ffffff, #ffe6e6);
+    overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    text-align: center;
+}
+
+/* Center text */
+.container {
+    position: relative;
+    top: 30%;
+    transform: translateY(-30%);
+    z-index: 2;
+}
+
+h1 {
+    color: #d10000;
+    font-size: 2.2rem;
+}
+
+h2 {
+    color: #ff1a1a;
+    font-size: 1.8rem;
+    margin-bottom: 40px;
+}
+
+/* Buttons */
+button {
+    font-size: 1.3rem;
+    padding: 18px 45px;
+    border-radius: 35px;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    touch-action: manipulation;
+    pointer-events: auto;
+    z-index: 10;
+}
+
+#yesBtn {
+    background: #ff1a1a;
+    color: white;
+}
+
+#noBtn {
+    background: white;
+    color: #ff1a1a;
+    border: 2px solid #ff1a1a;
+    position: fixed;
+}
+
+/* Hearts */
+.heart {
+    position: fixed;
+    animation: float 6s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes float {
+    from {
+        transform: translateY(100vh) scale(0.6);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(-10vh) scale(1.2);
+        opacity: 1;
+    }
+}
+
+/* Fireworks */
+.firework {
+    position: fixed;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    animation: explode 1s ease-out forwards;
+}
+
+@keyframes explode {
+    to {
+        transform: scale(18);
+        opacity: 0;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>WILL YOU BE MY VALENTINE 💖</h1>
+    <h2>ARCHITA</h2>
+
+    <button id="yesBtn">YES 💘</button>
+</div>
+
+<button id="noBtn">NO 💔</button>
+
+<script>
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
+
+/* Initial NO position */
+noBtn.style.left = "55%";
+noBtn.style.top = "65%";
+
+/* Move NO away from finger */
+function moveNo(x, y) {
+    const offset = 140;
+    let newX = x + (Math.random() > 0.5 ? offset : -offset);
+    let newY = y + (Math.random() > 0.5 ? offset : -offset);
+
+    newX = Math.max(20, Math.min(window.innerWidth - 120, newX));
+    newY = Math.max(20, Math.min(window.innerHeight - 60, newY));
+
+    noBtn.style.left = newX + "px";
+    noBtn.style.top = newY + "px";
+}
+
+/* iPhone-safe touch handling */
+noBtn.addEventListener("touchstart", (e) => {
+    const t = e.touches[0];
+    moveNo(t.clientX, t.clientY);
+}, { passive: true });
+
+noBtn.addEventListener("pointerdown", (e) => {
+    moveNo(e.clientX, e.clientY);
+});
+
+/* YES fireworks */
+function fireworks() {
+    for (let i = 0; i < 25; i++) {
+        const fw = document.createElement("div");
+        fw.className = "firework";
+        fw.style.left = Math.random() * window.innerWidth + "px";
+        fw.style.top = Math.random() * window.innerHeight + "px";
+        fw.style.background = ["red","pink","white"][Math.floor(Math.random()*3)];
+        document.body.appendChild(fw);
+        setTimeout(() => fw.remove(), 1000);
+    }
+}
+
+yesBtn.addEventListener("touchstart", fireworks, { passive: true });
+yesBtn.addEventListener("pointerdown", fireworks);
+
+/* Hearts */
+setInterval(() => {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerHTML = "❤️";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = Math.random() * 22 + 16 + "px";
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 6000);
+}, 300);
+</script>
+
+</body>
+</html>
